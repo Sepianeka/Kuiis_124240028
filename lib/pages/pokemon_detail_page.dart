@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import '../models/animal.dart';
+import '../models/pokemon.dart';
 import '../core/theme/app_colors.dart';
 import '../core/utils/format.dart';
-import '../widgets/animal_image.dart';
+import '../widgets/Pokemon_image.dart';
 import '../widgets/type_tag.dart';
-import '../widgets/info_chip.dart';
 
-class AnimalDetailPage extends StatelessWidget {
-  final Animal animal;
+class PokemonDetailPage extends StatelessWidget {
+  final Pokemon pokemon;
 
-  const AnimalDetailPage({super.key, required this.animal});
+  const PokemonDetailPage({super.key, required this.pokemon});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +19,7 @@ class AnimalDetailPage extends StatelessWidget {
             expandedHeight: 320,
             pinned: true,
             leading: CircleAvatar(
-              backgroundColor: Colors.black.withOpacity(0.4),
+              backgroundColor: Colors.black.withAlpha((255 * 0.4).round()),
               child: IconButton(
                 icon: const Icon(Icons.arrow_back, color: Colors.white),
                 onPressed: () => Navigator.pop(context),
@@ -28,16 +27,16 @@ class AnimalDetailPage extends StatelessWidget {
             ),
             flexibleSpace: FlexibleSpaceBar(
               background: Hero(
-                tag: 'animal-${animal.name}',
-                child: AnimalImage(
-                  imageUrl: animal.image,
+                tag: 'pokemon-${pokemon.name}',
+                child: PokemonImage(
+                  imageUrl: pokemon.image,
                   height: 320,
                   fit: BoxFit.cover,
                 ),
               ),
             ),
-    	    title: Text(
-              animal.name,
+            title: Text(
+              pokemon.name,
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),
@@ -54,107 +53,67 @@ class AnimalDetailPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      animal.name,
+                      pokemon.name,
                       style: Theme.of(context).textTheme.displayLarge,
                     ),
                     const SizedBox(height: 8),
-                    TypeTag(type: animal.type),
+                    Text(
+                      'ID: #${pokemon.id}',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 12),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: pokemon.types.map((type) => TypeTag(type: type)).toList(),
+                    ),
                     const SizedBox(height: 24),
-                    // Statistik Row
                     Row(
                       children: [
                         _StatTile(
                           icon: Icons.height,
                           label: 'Tinggi',
-                          value: FormatUtils.formatNumber(animal.height.toDouble(), 'cm'),
+                          value: FormatUtils.formatNumber(pokemon.height.toDouble(), 'cm'),
                         ),
                         const SizedBox(width: 12),
                         _StatTile(
                           icon: Icons.scale,
                           label: 'Berat',
-                          value: FormatUtils.formatNumber(animal.weight, 'kg'),
+                          value: FormatUtils.formatNumber(pokemon.weight.toDouble(), 'kg'),
                         ),
                       ],
                     ),
                     const SizedBox(height: 24),
-                    // Description Section
                     Text(
-                      'Deskripsi',
+                      'Kemampuan',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     const SizedBox(height: 12),
-                    Text(
-                      animal.description,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        height: 1.5,
-                        color: Colors.black87,
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    // Fun Fact Section
                     Container(
+                      width: double.infinity,
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: AppColors.accent.withOpacity(0.1),
+                        color: AppColors.accent.withAlpha((255 * 0.1).round()),
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: AppColors.accent.withOpacity(0.3)),
+                        border: Border.all(color: AppColors.accent.withAlpha((255 * 0.3).round())),
                       ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Icon(Icons.lightbulb, color: AppColors.accent),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Fakta Menarik',
-                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.accent,
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  animal.funFact,
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                      child: Text(
+                        pokemon.ability,
+                        style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ),
                     const SizedBox(height: 24),
-                    // Habitat Section
                     Text(
-                      'Habitat',
+                      'Jenis',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     const SizedBox(height: 12),
                     Wrap(
                       spacing: 8,
                       runSpacing: 8,
-                      children: animal.habitat.map((h) => InfoChip(
-                        label: h,
-                        icon: Icons.terrain,
-                      )).toList(),
-                    ),
-                    const SizedBox(height: 24),
-                    // Aktivitas Section
-                    Text(
-                      'Aktivitas',
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    const SizedBox(height: 12),
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: animal.activities.map((a) => InfoChip(
-                        label: a,
-                        isFilled: true,
-                      )).toList(),
+                      children: pokemon.types
+                          .map((type) => TypeTag(type: type))
+                          .toList(),
                     ),
                     const SizedBox(height: 32),
                     SizedBox(
@@ -168,7 +127,7 @@ class AnimalDetailPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(14),
                           ),
                         ),
-                        child: const Text('Kembali ke daftar hewan'),
+                        child: const Text('Kembali ke Home'),
                       ),
                     ),
                   ],

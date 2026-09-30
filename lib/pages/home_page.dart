@@ -1,25 +1,63 @@
 import 'package:flutter/material.dart';
-import '../data/animals_data.dart';
-import '../pages/animal_detail_page.dart';
-import '../widgets/animal_card.dart';
+import 'package:animal_atlas/data/pokemon_data.dart';
+import 'pokemon_detail_page.dart';
+import 'profile_page.dart';
+import '../widgets/Pokemon_card.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomePage extends StatefulWidget {
+  final String username;
+
+  const HomePage({super.key, this.username = ''});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    final pages = <Widget>[
+      _PokemonListPage(username: widget.username),
+      ProfilePage(username: widget.username),
+    ];
+
+    return Scaffold(
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: pages,
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        selectedItemColor: const Color(0xFF2D6A4F),
+        unselectedItemColor: const Color(0xFF64736A),
+        onTap: (index) => setState(() => _selectedIndex = index),
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.catching_pokemon),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profil',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _PokemonListPage extends StatelessWidget {
+  final String username;
+
+  const _PokemonListPage({required this.username});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Animals List'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            tooltip: 'Keluar',
-            onPressed: () {
-              Navigator.pushReplacementNamed(context, '/login');
-            },
-          ),
-        ],
+        title: Text(username.isEmpty ? 'Pokémon List' : 'Halo, $username'),
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
@@ -27,7 +65,7 @@ class HomePage extends StatelessWidget {
 
           return GridView.builder(
             padding: const EdgeInsets.all(16),
-            itemCount: dummyAnimals.length,
+            itemCount: pokemonList.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: crossAxisCount,
               crossAxisSpacing: 12,
@@ -35,14 +73,14 @@ class HomePage extends StatelessWidget {
               mainAxisExtent: 280,
             ),
             itemBuilder: (context, index) {
-              final animal = dummyAnimals[index];
-              return AnimalCard(
-                animal: animal,
+              final pokemon = pokemonList[index];
+              return PokemonCard(
+                pokemon: pokemon,
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AnimalDetailPage(animal: animal),
+                      builder: (context) => PokemonDetailPage(pokemon: pokemon),
                     ),
                   );
                 },

@@ -4,9 +4,9 @@ import 'package:animal_atlas/main.dart';
 
 void main() {
   testWidgets('opens directly on login', (WidgetTester tester) async {
-    await tester.pumpWidget(const AnimalAtlasApp());
+    await tester.pumpWidget(const PokemonAtlasApp());
 
-    expect(find.text('Animal Atlas'), findsOneWidget);
+    expect(find.text('Pokemon Atlas'), findsOneWidget);
     expect(find.text('Login'), findsNWidgets(2));
   });
 }

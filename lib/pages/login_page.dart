@@ -33,10 +33,7 @@ class _LoginPageState extends State<LoginPage> {
 
     if (username == AuthConstants.validNim &&
         password.toLowerCase() == AuthConstants.validProdi.toLowerCase()) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
-      );
+      Navigator.pushReplacementNamed(context, '/home', arguments: username);
     } else {
       _showErrorSnackBar('Login gagal! Username atau password salah.');
     }
@@ -82,17 +79,17 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'Animal Atlas',
+                    'Pokemon Atlas',
                     style: Theme.of(context).textTheme.displayLarge?.copyWith(
                           color: Colors.white,
                         ),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Masuk untuk melihat\ndaftar hewan',
+                    'Masuk untuk melihat\ndaftar Pokémon',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Colors.white.withOpacity(0.7),
+                          color: Colors.white.withAlpha((255 * 0.7).round()),
                         ),
                   ),
                 ],

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AppColors {
   static const Color ink = Color(0xFF20332A);
   static const Color inkSoft = Color(0xFF64736A);
-  static const Color primary = Color(0xFF2D6A4F);
+  static const Color primary = Color(0xFFE5A83B);
   static const Color accent = Color(0xFFE5A83B);
   static const Color mist = Color(0xFFF1F5ED);
   static const Color surface = Color(0xFFFFFFFF);
@@ -15,7 +15,7 @@ class AppColors {
       case 'mammal':
         return const Color(0xFF9A6216);
       case 'reptile':
-        return const Color(0xFF3E7C59);
+        return const Color(0xFFE5A83B);
       case 'bird':
         return const Color(0xFF2E86AB);
       case 'dog':

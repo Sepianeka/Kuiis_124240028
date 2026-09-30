@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import '../core/theme/app_colors.dart';
 
-class AnimalImage extends StatelessWidget {
+class PokemonImage extends StatelessWidget {
   final String imageUrl;
   final double? width;
   final double? height;
   final BoxFit fit;
 
-  const AnimalImage({
+  const PokemonImage({
     super.key,
     required this.imageUrl,
     this.width,

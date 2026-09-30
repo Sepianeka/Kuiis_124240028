@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import '../models/animal.dart';
-import '../widgets/animal_image.dart';
-import '../widgets/type_tag.dart';
+import '../models/pokemon.dart';
+import 'Pokemon_image.dart';
+import 'type_tag.dart';
 
-class AnimalCard extends StatelessWidget {
-  final Animal animal;
+class PokemonCard extends StatelessWidget {
+  final Pokemon pokemon;
   final VoidCallback onTap;
 
-  const AnimalCard({
+  const PokemonCard({
     super.key,
-    required this.animal,
+    required this.pokemon,
     required this.onTap,
   });
 
@@ -33,9 +33,9 @@ class AnimalCard extends StatelessWidget {
                   ClipRRect(
                     borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
                     child: Hero(
-                      tag: 'animal-${animal.name}',
-                      child: AnimalImage(
-                        imageUrl: animal.image,
+                      tag: 'pokemon-${pokemon.name}',
+                      child: PokemonImage(
+                        imageUrl: pokemon.image,
                         width: double.infinity,
                         fit: BoxFit.cover,
                       ),
@@ -44,7 +44,13 @@ class AnimalCard extends StatelessWidget {
                   Positioned(
                     left: 8,
                     bottom: 8,
-                    child: TypeTag(type: animal.type),
+                    child: Wrap(
+                      spacing: 4,
+                      runSpacing: 4,
+                      children: pokemon.types
+                          .map((type) => TypeTag(type: type))
+                          .toList(),
+                    ),
                   ),
                 ],
               ),
@@ -55,7 +61,7 @@ class AnimalCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    animal.name,
+                    pokemon.name,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -63,38 +69,17 @@ class AnimalCard extends StatelessWidget {
                         ),
                   ),
                   const SizedBox(height: 4),
-                  Wrap(
-                    spacing: 4,
-                    runSpacing: 4,
-                    children: animal.habitat.map((h) => _HabitatChip(label: h)).toList(),
+                  Text(
+                    'Ability: ${pokemon.ability}',
+                    style: const TextStyle(
+                      fontSize: 11,
+                      color: Color(0xFF10262B),
+                    ),
                   ),
                 ],
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _HabitatChip extends StatelessWidget {
-  final String label;
-  const _HabitatChip({required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-      decoration: BoxDecoration(
-        border: Border.all(color: const Color(0xFFD5E0DD)),
-        borderRadius: BorderRadius.circular(999),
-      ),
-      child: Text(
-        label,
-        style: const TextStyle(
-          fontSize: 11,
-          color: Color(0xFF10262B),
         ),
       ),
     );
